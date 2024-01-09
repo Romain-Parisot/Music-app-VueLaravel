@@ -73,8 +73,16 @@ export default {
             if (!this.currentTrack) {
                 this.audio = new Audio(url);
                 this.audio.play();
-            }
-            this.currentTrack = track.uuid;   
+            } else if (this.currentTrack !== track.uuid) {
+                this.audio.pause();
+                this.audio.src = url;
+                this.audio.play();
+            }  
+            else if (!this.audio.paused) {
+                this.audio.pause();
+            } else {
+                this.audio.play();
+            }  
         },
     },
 };

@@ -1,15 +1,13 @@
 <template>
     <MusicLayout>
         <template #title>
-            Créer une musique
+            Créer un nouveau titre
         </template>
         <template #action>
-            <Link :href="route('tracks.index')" class="bg-blue-500">
-                Retour
-            </Link> 
+            
         </template>
         <template #content>
-            <form>
+            <form @submit.prevent="submit">
                 <div class="mb-3">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
                         Titre
@@ -22,11 +20,13 @@
                         type="text"
                         placeholder="Title"
                     >
-                    <p class="text-red-500 text-xs italic">{{ form.errors.title }}</p>
+                    <p class="text-red-500 text-xs italic">{{ form.errors.title }}</p>   
                 </div>
+
+                    <!-- Artist input -->
                 <div class="mb-3">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="artist">
-                        Artiste
+                        Artist
                     </label>
                     <input
                         id="artist"
@@ -34,89 +34,139 @@
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-red-500"
                         :class="{ 'border-red-500': form.errors.artist }"
                         type="text"
-                        placeholder="Nom de l'artiste"
+                        placeholder="Artist"
                     >
-                    <p class="text-red-500 text-xs italic">{{ form.errors.artist }}</p>
+                    <p class="text-red-500 text-xs italic">{{ form.errors.artist }}</p>  
                 </div>
-                <div class="mb-3">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="album">
-                        Album
-                    </label>
-                    <input
-                        id="album"
-                        v-model="form.album"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-red-500"
-                        :class="{ 'border-red-500': form.errors.album }"
-                        type="text"
-                        placeholder="Nom de l'album"
-                    >
-                    <p class="text-red-500 text-xs italic">{{ form.errors.album }}</p>
-                </div>
+
+                    <!-- Image input -->
                 <div class="mb-3">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="image">
-                        Image
+                        Miniature
                     </label>
                     <input
                         id="image"
-                        v-on="form.image"
+                        @change="handleInputChange($event, 'image')"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-red-500"
                         :class="{ 'border-red-500': form.errors.image }"
                         type="file"
-                        placeholder="Image"
+                        accept="image/*"
                     >
-                    <p class="text-red-500 text-xs italic">{{ form.errors.image }}</p>
+                    <p class="text-red-500 text-xs italic">{{ form.errors.image }}</p>  
                 </div>
+
+                    <!-- Music input -->
                 <div class="mb-3">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="music">
-                        Musique
+                        Music
                     </label>
                     <input
                         id="music"
-                        v-on="form.music"
+                        @change="handleInputChange($event, 'music')"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-red-500"
                         :class="{ 'border-red-500': form.errors.music }"
                         type="file"
-                        placeholder="Musique"
+                        accept="audio/*"
                     >
-                    <p class="text-red-500 text-xs italic">{{ form.errors.music }}</p>
+                        <p class="text-red-500 text-xs italic">{{ form.errors.music }}</p>
                 </div>
+
+                    <!-- Display input -->
                 <div class="mb-3">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="display">
-                        Afficher
+                        Display
                     </label>
-                    <input
+                    <select
                         id="display"
                         v-model="form.display"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-red-500"
                         :class="{ 'border-red-500': form.errors.display }"
-                        type="checkbox"
-                        placeholder="Afficher"
                     >
-                    <p class="text-red-500 text-xs italic">{{ form.errors.display }}</p>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                    <p class="text-red-500 text-xs italic">{{ form.errors.display }}</p> 
                 </div>
-                {{ form }}
+
+                <input type="submit" value="Submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
             </form>
+
+            {{ form }}
         </template>
     </MusicLayout>
 </template>
-
+   
 <script>
-import MusicLayout from '@/Layouts/MusicLayout.vue';
-
-    export default {
-    components: { MusicLayout },
-    data() {
-        return {
-            test: 'test',
-            form: this.$inertia.form({
-                title: '',
-                artist: '',
-                album: '',
-                image: null,
-                music: null,
-                display: true,
-            }),
-        };
-    },
-}
+   import MusicLayout from '@/Layouts/MusicLayout.vue'
+   export default {
+       components: { MusicLayout },
+       data() {
+           return {
+               form: this.$inertia.form({
+                  title: '',
+                  artist: '',
+                  image: null,
+                  music: null,
+                  display: true,
+               })
+           }
+       },
+       methods: {
+           handleInputChange(event, fieldName) {
+               this.form[fieldName] = event.target.files[0];
+           },
+           submit() {
+                this.form.post(route('tracks.store'), {
+                    onSuccess: () => this.$inertia.visit(route('track.index')),
+                });
+           }
+       }
+   }
 </script>
+   
+<style scoped>
+    .track-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    }
+
+    .track-card {
+    margin: 1rem;
+    width: calc((100% / 3) - 2rem); /* Adjusted width */
+    height: 32rem; /* Adjusted height */
+    background-color: #f3f4f6;
+    border-radius: 0.375rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    position: relative; /* Added to position the play count */
+    }
+
+    .track-image {
+    width: 100%;
+    height: auto;
+    }
+
+    .track-info {
+    padding: 1rem;
+    color: #333;
+    }
+
+    .track-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    }
+
+    .track-artist {
+    font-size: 1.2rem;
+    color: #666;
+    }
+
+    .track-play-count {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 1.2rem;
+    color: #666;
+    }
+</style>

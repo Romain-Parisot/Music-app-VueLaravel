@@ -83,6 +83,11 @@ export default {
             } else {
                 this.audio.play();
             }  
+
+            this.currentTrack = track.uuid;
+            this.audio.addEventListener('ended', () => {
+                this.currentTrack = null;
+            });
         },
     },
 };

@@ -32,6 +32,7 @@
         >
             <div class="w-full flex justify-content-between">
                 <Link
+                    v-if="$page.props.isAdmin"
                     :href="route('tracks.edit', { track: track })"
                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-8/12 text-center"
                     style="margin-left: 50%; transform: translateX(-50%)"
@@ -41,6 +42,7 @@
             </div>
             <div class="w-full flex justify-content-between">
                 <Link
+                    v-if="$page.props.isAdmin"
                     :href="route('tracks.delete', { track: track })"
                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-8/12 text-center"
                     method="delete"

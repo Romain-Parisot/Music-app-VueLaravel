@@ -27,6 +27,8 @@ Route::get('/tracks/{track}/edit', [TrackController::class, 'edit'])->name('trac
 
 Route::put('/tracks/{track}', [TrackController::class, 'update'])->name('tracks.update');
 
+Route::delete('/tracks/{track}', [TrackController::class, 'destroy'])->name('tracks.delete');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

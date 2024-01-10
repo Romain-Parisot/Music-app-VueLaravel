@@ -23,6 +23,10 @@ Route::get('/tracks/create', [TrackController::class, 'create'])->name('tracks.c
 
 Route::post('/tracks', [TrackController::class, 'store'])->name('tracks.store');
 
+Route::get('/tracks/{track}/edit', [TrackController::class, 'edit'])->name('tracks.edit');
+
+Route::put('/tracks/{track}', [TrackController::class, 'update'])->name('tracks.update');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

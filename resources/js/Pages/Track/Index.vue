@@ -12,30 +12,24 @@
             </Link>
         </template>
         <template #content>
-            <input 
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                <input 
                 type="search" 
                 name="search" 
                 id="search"
                 v-model="search"
-            >
-            Search : {{ search }}
+                >
+                Search : {{ search }}
+            </div>
             
             <div class="grid grid-cols-4 gap-4">
-                <div
+                <Track
                 v-for="track in filteredTracks"
                 :key="track.uuid"
-                class="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer"
-                @click="play(track)">
-                <div class="w-full h-1/2">
-                <img class="w-full h-full" :src="`/storage/${track.image}`" />
-                </div>
-                <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">{{ track.title }}</div>
-                <small class="text-gray-700 text-base">
-                    {{ track.artist }}
-                </small>
-                </div>
-                </div>
+                :track="track"
+                :active="currentTrack === track.uuid"
+                @played="play"
+                />
             </div>
         </template>
     </MusicLayout>
@@ -44,11 +38,13 @@
 <script>
 import MusicLayout from "@/Layouts/MusicLayout.vue";
 import { Link } from "@inertiajs/vue3";
+import Track from "@/Components/Track/Track.vue";
 
 export default {
     components: {
         MusicLayout,
         Link,
+        Track,
     },
     props: {
         tracks: Array,

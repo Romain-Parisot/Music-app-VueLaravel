@@ -87,22 +87,25 @@
                         <div>
                             <div style="display: flex; width: auto; gap: 20px">
                                 <Link
+                                    v-if="!$page.props.auth.user"
                                     :href="route('login')"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-8/12"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     Login
                                 </Link>
                                 <Link
+                                    v-if="$page.props.auth.user"
                                     :href="route('logout')"
                                     method="post"
                                     as="button"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-8/12"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     Logout
                                 </Link>
                                 <Link
+                                    v-if="!$page.props.auth.user"
                                     :href="route('register')"
-                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-8/12"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                 >
                                     Register
                                 </Link>

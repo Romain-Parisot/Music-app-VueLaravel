@@ -33,6 +33,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
+    'admin',
 ])->group(function () {
     Route::get('tracks/create', [TrackController:: class, 'create'])->name('tracks.create');
 

@@ -27,6 +27,6 @@ class Track extends Model
 
     public function playlists(): BelongsToMany
     {
-        return $this->belongsToMany(Playlist::class);
+        return $this->belongsToMany(Playlist::class)->withTimestamps();
     }
 }

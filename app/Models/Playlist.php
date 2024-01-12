@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Track;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Playlist extends Model
 {
@@ -15,14 +18,18 @@ class Playlist extends Model
         'user_id',
         'title',
     ];
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function tracks(): BelongsTo
+    public function tracks(): BelongsToMany
     {
-        return $this->belongsTo(Track::class);
+        return $this->belongsToMany(Track::class)->withTimestamps();
     }
 }

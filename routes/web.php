@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TrackController;
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\PlaylistController;
 
 /*
@@ -26,6 +27,8 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::resource('playlists', PlaylistController::class);
+
+    Route::resource('apiKeys', ApiKeyController::class);
 
     Route::middleware(['admin'])->group(function () {
         Route::get('tracks/create', [TrackController::class, 'create'])->name('tracks.create');
